@@ -9,7 +9,7 @@ const paintBtn = document.getElementById("paint-btn");
 const widthValue = document.getElementById("width-value");
 const heightValue = document.getElementById("height-value");
 
-let events = {
+let events = {                           // ???
     mouse: {
         down: "mousedown",
         move: "mousemove",
@@ -27,7 +27,7 @@ let deviceType = "";
 let draw = false;
 let erase = false;
 
-const isTouchDevice = () => {
+const isTouchDevice = () => { //verificar se o dispositivo é touch
     try {
         document.createEvent("TouchEvent");
         deviceType = "touch";
@@ -47,14 +47,14 @@ gridButton.addEventListener("click", () => {
         //altura
         count += 2;
         let div = document.createElement("div");
-        div.classList.add("gridRow");
+        div.classList.add("gridRow"); // gridrow é a div da linha horizontal inteira
 
         for (let j = 0; j < gridWidth.value; j++) {
             count += 2;
             let col = document.createElement("div");
-            col.classList.add("gridCol");
+            col.classList.add("gridCol"); //gridcol é cada pixel que forma a linha horizonal
             col.setAttribute("id", `gridCol${count}`);
-            col.addEventListener(events[deviceType].down, () => {
+            col.addEventListener(events[deviceType].down, () => { // down?
                 draw = true;
                 if (erase) {
                     col.style.background = "transparent";
@@ -63,7 +63,7 @@ gridButton.addEventListener("click", () => {
                 }
             });
 
-            col.addEventListener(events[deviceType].move, (e) => {
+            col.addEventListener(events[deviceType].move, (e) => { // ??? para pintar
                 let elementId = document.elementFromPoint(
                     !isTouchDevice() ? e.clientX : e.touches[0].clientX,
                     !isTouchDevice() ? e.clientY : e.touches[0].clientY
@@ -75,15 +75,15 @@ gridButton.addEventListener("click", () => {
                 draw = false;
             });
 
-            div.appendChild(col);
+            div.appendChild(col); //adicionar a div.col a div.row (pixel na linha inteira)
         }
 
-        container.appendChild(div);
+        container.appendChild(div); // adicionar a div.row no container total
     }
 });
 
-function checker(elementId) {
-    let gridColumns = document.querySelectorAll(".gridCol");
+function checker(elementId) { // é a funcao que apaga e desenha
+    let gridColumns = document.querySelectorAll(".gridCol"); //qual pixel selecionar ???
     gridColumns.forEach((element) => {
         if (elementId == element.id) {
             if (draw && !erase) {
@@ -113,12 +113,12 @@ paintBtn.addEventListener("click", () => {
 
 gridWidth.addEventListener("input", () => {
     widthValue.innerHTML =
-        gridWidth.value < 9 ? `0${gridWidth.value}` : gridWidth.value;
+        gridWidth.value <= 9 ? `0${gridWidth.value}` : gridWidth.value; //se for menor que 9 adicionar 0 na frente para ficar com 2 dígitos
 });
 
 gridHeight.addEventListener("input", () => {
     heightValue.innerHTML =
-        gridHeight.value < 9 ? `0${gridHeight.value}` : gridHeight.value;
+        gridHeight.value <= 9 ? `0${gridHeight.value}` : gridHeight.value;
 });
 
 window.onload = () => {
